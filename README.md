@@ -44,13 +44,14 @@ The design-system components (`Tag`, `Button`, `Panel`, …) come from the prebu
 
 ## Deploy
 
-Pushes to `main` build and deploy to Cloudflare Pages through `.github/workflows/deploy.yml`. Other branches and PRs get preview deployments.
+Cloudflare builds and deploys from this repo (Workers Builds, project name `web`). Pushes to `main` go to production; other branches get preview URLs.
 
-One-time setup:
+Settings in the Cloudflare dashboard (Workers & Pages → web → Settings → Build):
 
-1. Create the project: `bunx wrangler pages project create standard-inference --production-branch main`
-2. Create a Cloudflare API token with the **Cloudflare Pages: Edit** permission, and find your Account ID.
-3. Add repo secrets `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` (Settings → Secrets and variables → Actions).
+- Build command: `bun run build`
+- Deploy command: `npx wrangler deploy`
+
+`wrangler.jsonc` points `wrangler deploy` at `dist/` as static assets. Without it, Wrangler tries to convert the project to the Astro Cloudflare adapter and the deploy fails.
 
 ## Gotchas
 
