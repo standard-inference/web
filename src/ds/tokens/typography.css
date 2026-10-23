@@ -1,0 +1,20 @@
+:root{
+--font-display:'IBM Plex Sans Condensed','Arial Narrow',sans-serif;
+--font-body:'IBM Plex Sans','Helvetica Neue',sans-serif;
+--font-mono:'IBM Plex Mono',ui-monospace,monospace;
+/* Frame scale — authored for a 1920×1080 frame */
+--type-display-xl:160px;--type-display:112px;--type-h1:72px;--type-h2:56px;--type-h3:40px;
+--type-body-l:36px;--type-body:30px;--type-caption:26px;--type-label:24px;
+--lh-tight:0.92; /* @kind other */
+--lh-heading:1.04; /* @kind other */
+--lh-body:1.35; /* @kind other */
+--lh-label:1; /* @kind other */
+--weight-regular:400;--weight-medium:500;--weight-semibold:600;--weight-bold:700;
+--tracking-display:-0.01em;--tracking-header:0.04em;--tracking-label:0.08em;
+/* Semantic */
+--text-title:var(--weight-bold) var(--type-h1)/var(--lh-heading) var(--font-display);
+--text-heading:var(--weight-bold) var(--type-h3)/var(--lh-heading) var(--font-display);
+--text-body:var(--weight-regular) var(--type-body)/var(--lh-body) var(--font-body);
+--text-label:var(--weight-medium) var(--type-label)/var(--lh-label) var(--font-mono);
+--text-code:var(--weight-medium) var(--type-body)/1.2 var(--font-mono);
+}

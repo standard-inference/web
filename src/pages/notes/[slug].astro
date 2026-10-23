@@ -1,0 +1,83 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import SpecHeader from '../../components/react/SpecHeader.jsx';
+import { Tag, Panel } from '../../ds/index.js';
+import '../../styles/prose.css';
+
+export async function getStaticPaths() {
+  const notes = await getCollection('notes');
+  return notes.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const n = entry.data;
+const { Content } = await render(entry);
+---
+
+<Base title={`${n.title} — Standard Inference`} description={n.summary} active="notes">
+  <div style="display: grid; gap: 0">
+    <SpecHeader client:load code={n.code} dept="Division of Technical Notes" form="Form 300-N" title={n.specTitle} sheet={n.sheet} />
+    <dl class="meta">
+      <div><dt>Date</dt><dd>{n.date}</dd></div>
+      <div><dt>Reading time</dt><dd>{n.mins} min</dd></div>
+      <div><dt>Level</dt><dd><Tag tone="inverse">{n.level}</Tag></dd></div>
+      <div><dt>Last checked</dt><dd>✓ {n.checked}</dd></div>
+    </dl>
+  </div>
+
+  <article class="note">
+    <header class="note-head">
+      <span class="eyebrow">Goes with {n.episode} // {n.series} // Placeholder post</span>
+      <h1>{n.title}</h1>
+      <div class="callout" style="border: var(--rule-structural) solid var(--ink-1); background: var(--paper-0)">
+        <div style="padding: 10px 18px; border-bottom: var(--rule-fine) solid var(--ink-1); font: var(--text-label); letter-spacing: var(--tracking-label); text-transform: uppercase">In short</div>
+        <p style="margin: 0; padding: 18px; text-wrap: pretty">{n.inShort}</p>
+      </div>
+    </header>
+
+    <div class="prose" style="display: contents"><Content /></div>
+
+    {n.sources.length > 0 && (
+      <section aria-labelledby="h-src" data-wipe class="note-section">
+        <h2 id="h-src">Sources</h2>
+        <ol class="sources">
+          {n.sources.map((s, i) => (
+            <li id={`src-${i + 1}`}>
+              <span class="mono">[{i + 1}]</span>
+              <span><a href={s.href}>{s.label}</a> <a href={`#cite-${i + 1}`} aria-label={`Back to citation ${i + 1}`}>↩</a></span>
+            </li>
+          ))}
+        </ol>
+      </section>
+    )}
+
+    {n.watch && (
+      <section aria-label="Watch the video" data-wipe style="margin-top: 24px">
+        <Panel code="▶" title="Watch the video" meta={n.watch.code}>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: 20px; align-items: center">
+            <div style="aspect-ratio: 16 / 9; border: var(--rule-structural) solid var(--ink-1); background: var(--pattern-hatch-light), var(--paper-2); display: flex; align-items: flex-end; padding: 8px"><span style="background: var(--paper-0); border: var(--rule-fine) solid var(--ink-1); padding: 4px 6px; font: var(--text-label); letter-spacing: var(--tracking-label); text-transform: uppercase">Thumbnail // {n.watch.code}</span></div>
+            <div style="display: grid; gap: 10px; justify-items: start">
+              <span style="font: var(--text-label); letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--ink-3)">{n.watch.series} // {n.watch.code}</span>
+              <strong style="font: var(--weight-bold) var(--type-h3)/var(--lh-heading) var(--font-display); text-transform: uppercase; letter-spacing: var(--tracking-header)"><a href={n.watch.href} style="color: var(--ink-1)">{n.watch.title}</a></strong>
+              <Tag tone="caution">{n.watch.status}</Tag>
+            </div>
+          </div>
+        </Panel>
+      </section>
+    )}
+
+    <section aria-labelledby="h-corr" data-wipe class="note-section">
+      <h2 id="h-corr">Corrections</h2>
+      {n.corrections.length === 0 ? (
+        <p class="none">No corrections yet.</p>
+      ) : (
+        <ol class="corrections">
+          {n.corrections.map((k) => (
+            <li><span class="d">{k.date}</span><span><strong>Was:</strong> {k.was}</span><span><strong>Now:</strong> {k.now}</span></li>
+          ))}
+        </ol>
+      )}
+    </section>
+  </article>
+</Base>

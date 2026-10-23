@@ -1,0 +1,37 @@
+---
+import { nav, type NavKey } from '../data/site';
+const { active } = Astro.props as { active?: NavKey };
+---
+
+<header class="site-header">
+  <a href="#main" class="skip">Skip to content</a>
+  <div class="bar">
+    <a href="/" aria-label="Standard Inference, home" class="logo">
+      <span class="word">Standard<br />Inference</span>
+      <span aria-hidden="true" class="stripes"><span style="background: var(--caution-500)"></span><span style="background: var(--approve-500)"></span><span style="background: var(--reject-500)"></span><span style="background: var(--utility-700)"></span></span>
+    </a>
+    <nav aria-label="Main">
+      <ul>
+        {nav.map((l) => (
+          <li><a data-hl href={l.href} aria-current={l.key === active ? 'page' : undefined} class:list={{ on: l.key === active }}>{l.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header { background: var(--paper-0); border-bottom: var(--rule-structural) solid var(--ink-1); position: relative; }
+  .skip { position: absolute; left: -9999px; top: 8px; z-index: 10; padding: 12px 16px; background: var(--ink-1); color: var(--paper-0); font: var(--text-label); text-transform: uppercase; letter-spacing: var(--tracking-label); }
+  .skip:focus { left: 16px; }
+  .bar { max-width: 1440px; margin: 0 auto; padding: 14px var(--frame-margin); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px 32px; }
+  .logo { display: inline-grid; grid-template-columns: auto 12px; border: var(--rule-structural) solid var(--ink-1); background: var(--signal-500); color: var(--ink-1); text-decoration: none; }
+  .logo:hover { background: var(--signal-600); }
+  .word { padding: 8px 14px 8px 12px; font: 700 22px/0.92 var(--font-display); text-transform: uppercase; letter-spacing: -0.01em; }
+  .stripes { display: grid; grid-template-rows: repeat(4, 1fr); border-left: var(--rule-fine) solid var(--ink-1); }
+  ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 4px; }
+  li { display: flex; }
+  li a { min-height: 44px; display: flex; align-items: center; gap: 6px; padding: 0 12px; font: var(--text-label); letter-spacing: var(--tracking-label); text-transform: uppercase; text-decoration: none; color: var(--ink-1); background: transparent; border: var(--rule-fine) solid transparent; }
+  li a:hover { border-color: var(--ink-1); }
+  li a.on { color: var(--paper-0); background: var(--ink-1); border-color: var(--ink-1); }
+</style>

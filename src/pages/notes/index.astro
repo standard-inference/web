@@ -1,0 +1,21 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import SpecHeader from '../../components/react/SpecHeader.jsx';
+import NotesIndex from '../../components/react/NotesIndex.jsx';
+
+const notes = (await getCollection('notes'))
+  .sort((a, b) => b.data.code.localeCompare(a.data.code))
+  .map((n) => ({ code: n.data.code, title: n.data.title, summary: n.data.summary, date: n.data.date, mins: n.data.mins, level: n.data.level, series: n.data.series, episode: n.data.episode, href: `/notes/${n.id}/` }));
+---
+
+<Base title="Technical Notes — Standard Inference" description="Longer written notes for readers who want the detail: the maths, the code and the sources." active="notes">
+  <div style="display: grid; gap: 32px">
+    <SpecHeader client:load code="TN" dept="Division of Technical Notes" form="Form 300-N" title="Index of notes" titleAt={760} sheetAt={99999} />
+    <div style="display: grid; gap: 14px">
+      <h1 style="margin: 0; font: var(--weight-bold) var(--type-display)/var(--lh-tight) var(--font-display); text-transform: uppercase; letter-spacing: var(--tracking-display)">Technical Notes</h1>
+      <p style="margin: 0; max-width: 56ch; font: var(--weight-regular) var(--type-body-l)/1.45 var(--font-body); color: var(--ink-2); text-wrap: pretty">Longer written notes for readers who want the detail: the maths, the code and the sources. Each one goes with a video, and none is required to follow it.</p>
+    </div>
+  </div>
+  <NotesIndex client:load notes={notes} />
+</Base>

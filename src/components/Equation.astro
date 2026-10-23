@@ -1,0 +1,17 @@
+---
+import katex from 'katex';
+const { n, title, tex } = Astro.props as { n: string; title: string; tex: string };
+const html = katex.renderToString(tex, { displayMode: true, throwOnError: false });
+---
+
+<div class="eq">
+  <div class="bar"><span>EQ {n} // {title}</span><span>Display maths</span></div>
+  <div class="body" set:html={html} />
+</div>
+
+<style>
+  .eq { border: var(--rule-structural) solid var(--ink-1); background: var(--paper-0); }
+  .bar { display: flex; justify-content: space-between; padding: 10px 18px; border-bottom: var(--rule-fine) solid var(--ink-1); font: var(--text-label); letter-spacing: var(--tracking-label); text-transform: uppercase; }
+  .bar span:last-child { color: var(--ink-3); }
+  .body { padding: 28px 18px; overflow-x: auto; text-align: center; font: var(--weight-medium) 1.25em/1.4 var(--font-mono); }
+</style>

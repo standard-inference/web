@@ -1,0 +1,158 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import SpecHeader from '../../components/react/SpecHeader.jsx';
+import { Tag, Panel } from '../../ds/index.js';
+import NextButton from '../../components/react/NextButton.jsx';
+
+export async function getStaticPaths() {
+  const all = (await getCollection('episodes')).sort((a, b) => a.data.n - b.data.n);
+  return all.map((entry, i) => ({ params: { slug: entry.id }, props: { entry, next: all[i + 1], total: all.length } }));
+}
+
+const { entry, next, total } = Astro.props;
+const e = entry.data;
+const pad = (n: number) => String(n).padStart(2, '0');
+const words = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'];
+---
+
+<Base title={`${e.code} ${e.title} — Standard Inference`} description={e.summary} active="videos">
+  <div style="display: grid; gap: 32px">
+    <SpecHeader client:load code={e.id} dept={e.series} form={e.form} title="Episode record" sheet={`${pad(e.n)} / ${pad(total)}`} titleAt={640} sheetAt={900} />
+    <div style="display: grid; gap: 12px">
+      <span class="label" style="color: var(--ink-2)">{e.series} // {e.id} // Working title</span>
+      <h1 style="margin: 0; max-width: 20ch; font: var(--weight-bold) var(--type-display)/var(--lh-tight) var(--font-display); text-transform: uppercase; letter-spacing: var(--tracking-display); text-wrap: balance">{e.title}</h1>
+      <p style="margin: 0; font: var(--weight-medium) var(--type-body-l)/1.3 var(--font-body); color: var(--ink-2)">Answers: <strong style="color: var(--ink-1)">“{e.question}”</strong></p>
+    </div>
+    <div role="img" aria-label="YouTube video embed placeholder" style="aspect-ratio: 16 / 9; border: var(--rule-structural) solid var(--ink-1); box-shadow: var(--shadow-print); background: var(--ink-1); color: var(--paper-1); display: grid; place-items: center; position: relative">
+      <div style="display: grid; justify-items: center; gap: 20px; text-align: center; padding: 16px">
+        <span style="width: clamp(64px,9vw,112px); aspect-ratio: 1; background: var(--signal-500); color: var(--ink-1); border: var(--rule-structural) solid var(--paper-1); display: grid; place-items: center; font: 600 clamp(28px,4vw,48px)/1 var(--font-mono)">▶</span>
+        <span class="label">YouTube embed // Video ID: [VIDEO_ID] // 16:9</span>
+      </div>
+    </div>
+  </div>
+
+  <section aria-labelledby="h-summary" data-wipe style="display: flex; flex-wrap: wrap; gap: 16px var(--frame-gutter); align-items: start">
+    <div style="flex: 1 1 220px; display: grid; gap: 8px">
+      <span class="label" style="color: var(--ink-2)">§ 01</span>
+      <h2 id="h-summary" class="h2-caps">In plain English</h2>
+    </div>
+    <p style="flex: 3 1 420px; margin: 0; max-width: 62ch; font: var(--weight-regular) var(--type-body-l)/1.5 var(--font-body); text-wrap: pretty">{e.summary}</p>
+  </section>
+
+  <section id="claims" aria-labelledby="h-claims" data-wipe class="ep-section" style="scroll-margin-top: 24px">
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px; padding-bottom: 16px; border-bottom: var(--rule-fine) solid var(--ink-1)">
+      <div style="display: grid; gap: 8px">
+        <span class="label" style="color: var(--ink-2)">§ 02 // Bureau of Accuracy // Form 200-C</span>
+        <h2 id="h-claims" class="h2-caps">Claims and sources</h2>
+      </div>
+      <span class="label" style="color: var(--ink-2)">{pad(e.claims.length)} claims // Placeholder sources</span>
+    </div>
+    {e.claims.length === 0 ? (
+      <p class="none">No claims published yet.</p>
+    ) : (
+      <>
+        <table class="claims-table">
+          <caption>Claims made in this episode, with sources and check status</caption>
+          <thead>
+            <tr>
+              <th scope="col" style="width: 48px">No.</th><th scope="col">Claim</th><th scope="col">Source</th><th scope="col">Status</th><th scope="col">Model and date</th>
+            </tr>
+          </thead>
+          <tbody>
+            {e.claims.map((c, i) => (
+              <tr>
+                <td class="no">{pad(i + 1)}</td>
+                <td style="text-wrap: pretty">{c.claim}</td>
+                <td><a href="#">{c.source}</a></td>
+                <td class="tag"><Tag tone={c.checked ? 'inverse' : 'default'}>{c.status}</Tag></td>
+                <td class="model">{c.model}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <ol class="claims-cards">
+          {e.claims.map((c, i) => (
+            <li>
+              <span class="label" style="color: var(--ink-3)">Claim {pad(i + 1)}</span>
+              <p style="margin: 0; font: var(--text-body)">{c.claim}</p>
+              <dl>
+                <dt class="label">Source</dt><dd><a href="#">{c.source}</a></dd>
+                <dt class="label">Status</dt><dd><Tag tone={c.checked ? 'inverse' : 'default'}>{c.status}</Tag></dd>
+                <dt class="label">Model</dt><dd class="model">{c.model}</dd>
+              </dl>
+            </li>
+          ))}
+        </ol>
+      </>
+    )}
+  </section>
+
+  <section aria-labelledby="h-corr" data-wipe class="ep-section">
+    <div style="display: grid; gap: 8px; padding-bottom: 16px; border-bottom: var(--rule-fine) solid var(--ink-1)">
+      <span class="label" style="color: var(--ink-2)">§ 03 // Office of Public Record</span>
+      <h2 id="h-corr" class="h2-caps">Corrections</h2>
+    </div>
+    {e.corrections.length === 0 ? (
+      <p class="none">No corrections yet.</p>
+    ) : (
+      <ol class="ep-corrections">
+        {e.corrections.map((k) => (
+          <li>
+            <span class="label" style="padding-top: 4px">{k.date}</span>
+            <div style="display: grid; gap: 6px; font: var(--text-body)"><span><strong>Was:</strong> {k.was}</span><span><strong>Now:</strong> {k.now}</span></div>
+          </li>
+        ))}
+      </ol>
+    )}
+  </section>
+
+  <section aria-labelledby="h-shorts" data-wipe class="ep-section">
+    <div style="display: grid; gap: 8px; padding-bottom: 16px; border-bottom: var(--rule-fine) solid var(--ink-1)">
+      <span class="label" style="color: var(--ink-2)">§ 04 // Short-form annex</span>
+      <h2 id="h-shorts" class="h2-caps">Shorts from this episode</h2>
+    </div>
+    <div style="display: flex; flex-wrap: wrap; gap: var(--frame-gutter)">
+      {[1, 2].map((n) => (
+        <div role="img" aria-label={`Short ${n} placeholder`} style="width: min(calc(50% - 8px), 260px); aspect-ratio: 9 / 16; border: var(--rule-structural) solid var(--ink-1); background: var(--pattern-hatch-light), var(--paper-2); display: flex; align-items: flex-end; padding: 10px"><span class="label" style="background: var(--paper-0); border: var(--rule-fine) solid var(--ink-1); padding: 6px 8px">Short {pad(n)} // 9:16</span></div>
+      ))}
+    </div>
+  </section>
+
+  {next && (
+    <section aria-labelledby="h-next" data-wipe>
+      <Panel code="→" title={`Next in ${next.data.series}`} meta={next.data.id} tone="recessed">
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px">
+          <div style="display: grid; gap: 10px; max-width: 46ch">
+            {e.bridge && <p style="margin: 0; font: var(--text-body); color: var(--ink-2)">{e.bridge}</p>}
+            <h2 id="h-next" class="h2-caps">{next.data.title}</h2>
+            <p style="margin: 0; font: var(--weight-medium) var(--type-body-l)/1.3 var(--font-body)">“{next.data.question}”</p>
+          </div>
+          <NextButton client:load href={`/episodes/${next.id}/`}>Watch episode {words[next.data.n - 1] ?? next.data.n}</NextButton>
+        </div>
+      </Panel>
+    </section>
+  )}
+</Base>
+
+<style is:global>
+  .ep-section { display: grid; gap: 24px; }
+  .none { margin: 0; padding: 20px; border: var(--rule-fine) dashed var(--ink-3); font: var(--text-body); color: var(--ink-2); }
+  .claims-table { width: 100%; border-collapse: collapse; border: var(--rule-structural) solid var(--ink-1); background: var(--paper-0); font: var(--text-body); }
+  .claims-table caption { position: absolute; left: -9999px; }
+  .claims-table thead tr { background: var(--ink-1); color: var(--paper-1); text-align: left; }
+  .claims-table th { padding: 12px 16px; font: var(--text-label); letter-spacing: var(--tracking-label); text-transform: uppercase; }
+  .claims-table tbody tr { border-top: var(--rule-fine) solid var(--ink-1); vertical-align: top; }
+  .claims-table td { padding: 16px; }
+  .claims-table td.tag { padding: 12px 16px; }
+  .claims-table td.no { font: var(--text-label); color: var(--ink-3); }
+  .claims-table .model, .claims-cards .model { font: var(--weight-medium) var(--type-caption)/1.4 var(--font-mono); color: var(--ink-2); }
+  .claims-cards { display: none; list-style: none; margin: 0; padding: 0; gap: 16px; }
+  .claims-cards li { border: var(--rule-structural) solid var(--ink-1); background: var(--paper-0); padding: 16px; display: grid; gap: 12px; }
+  .claims-cards dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 8px 16px; align-items: center; font: var(--text-body); border-top: var(--rule-fine) solid var(--paper-3); padding-top: 12px; }
+  .claims-cards dt { color: var(--ink-3); }
+  .claims-cards dd { margin: 0; }
+  @media (max-width: 759px) { .claims-table { display: none; } .claims-cards { display: grid; } }
+  .ep-corrections { list-style: none; margin: 0; padding: 0; border: var(--rule-structural) solid var(--ink-1); background: var(--paper-0); }
+  .ep-corrections li { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), auto)); gap: 8px 24px; padding: 16px 20px; border-bottom: var(--rule-fine) solid var(--paper-3); align-items: start; }
+</style>

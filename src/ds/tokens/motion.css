@@ -1,0 +1,22 @@
+:root{
+/* Calm and slow. Gentle in, gentle out. No bounce, no snap, no big travel. */
+--ease-assemble:cubic-bezier(0.4,0,0.2,1); /* @kind other */
+--ease-travel:cubic-bezier(0.45,0,0.55,1); /* @kind other */
+--ease-detach:cubic-bezier(0.4,0,1,1); /* @kind other */
+--ease-linear:linear; /* @kind other */
+--dur-snap:300ms; /* @kind other */
+--dur-move:1000ms; /* @kind other */
+--dur-assemble:1600ms; /* @kind other */
+--dur-draw:1800ms; /* @kind other */
+--dur-hold:3000ms; /* @kind other */
+--stagger:200ms; /* @kind other */
+--travel:12px; /* @kind other */
+}
+/* Reduced motion: every move becomes a short crossfade to its end state. */
+@media (prefers-reduced-motion: reduce){:root{
+--dur-move:300ms; /* @kind other */
+--dur-assemble:300ms; /* @kind other */
+--dur-draw:300ms; /* @kind other */
+--stagger:0ms; /* @kind other */
+--travel:0px; /* @kind other */
+}}

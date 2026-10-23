@@ -1,0 +1,37 @@
+/* SI-74 web scale.
+   Frame tokens are authored for 1920×1080. For the web we keep every token NAME and re-derive its value:
+   ~0.5× frame size at 1440px desktop, with readable floors at 375px. Ratios between steps are preserved. */
+:root{
+--type-display-xl:clamp(52px,8.2vw,120px); /* frame 160 */
+--type-display:clamp(40px,5.6vw,80px);     /* frame 112 */
+--type-h1:clamp(34px,4.2vw,56px);          /* frame 72 */
+--type-h2:clamp(26px,3vw,40px);            /* frame 56 */
+--type-h3:clamp(20px,1.9vw,26px);          /* frame 40 */
+--type-body-l:clamp(18px,1.4vw,20px);      /* frame 36 */
+--type-body:17px;                          /* frame 30 */
+--type-caption:15px;                       /* frame 26 */
+--type-label:13px;                         /* frame 24 */
+--type-reading:clamp(18px,calc(14px + 0.4vw),20px); /* long-form body only */
+--panel-pad:clamp(20px,2.6vw,32px);
+--cell-pad:16px;
+--frame-margin:clamp(20px,5vw,96px);
+--frame-gutter:clamp(16px,2.2vw,32px);
+}
+html{scroll-behavior:smooth}
+body{background:var(--pattern-dot-grid),var(--surface-page)}
+:focus-visible{outline:3px solid var(--utility-500);outline-offset:3px}
+[data-inverse] :focus-visible{outline-color:var(--paper-0)}
+.katex,.katex *{font-family:var(--font-mono)!important}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+
+/* Interaction states (hover darkens one step; press sinks into the print shadow). Stylesheet-only because inline styles can't target :hover on children. */
+[data-hl],[data-chip] span{transition:background-color var(--dur-snap) var(--ease-assemble),transform var(--dur-snap) var(--ease-assemble),box-shadow var(--dur-snap) var(--ease-assemble)}
+[data-hl]:not([aria-current="page"]):hover{background-color:var(--paper-2)!important;text-decoration-color:var(--ink-1)!important}
+[data-hl]:not([aria-current="page"]):active{background-color:var(--paper-3)!important}
+[data-press]:hover{background-color:var(--paper-2)!important}
+[data-press]:active{transform:translate(4px,4px);box-shadow:none!important}
+[data-chip]:hover span{background:var(--paper-2)!important}
+[data-chip][aria-pressed="true"]:hover span{background:var(--ink-2)!important}
+[data-chip]:active span{transform:translate(2px,2px)}
+[data-thumb]:hover{background:var(--pattern-hatch),var(--paper-2)!important}
+[data-thumb]:active{background:var(--pattern-hatch),var(--paper-3)!important}

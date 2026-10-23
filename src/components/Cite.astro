@@ -1,0 +1,8 @@
+---
+const { n, fn } = Astro.props as { n: number; fn?: boolean };
+const label = fn ? `*${n}` : `[${n}]`;
+const id = fn ? `fnref-${n}` : `cite-${n}`;
+const href = fn ? `#fn-${n}` : `#src-${n}`;
+---
+
+<a {id} {href} aria-label={fn ? `Footnote ${n}` : undefined} style="font: var(--weight-medium) 0.7em/1 var(--font-mono); vertical-align: super; margin-left: 2px">{label}</a>

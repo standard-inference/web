@@ -1,0 +1,40 @@
+---
+import '../ds/styles.css';
+import 'katex/dist/katex.min.css';
+import '../styles/web-scale.css';
+import '../styles/site.css';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import type { NavKey } from '../data/site';
+
+interface Props {
+  title: string;
+  description?: string;
+  active?: NavKey;
+  wide?: boolean; // full-bleed sections (home page) instead of the 1200px column
+}
+const { title, description, active, wide } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    {description && <meta name="description" content={description} />}
+  </head>
+  <body>
+    <div style="min-height: 100vh; display: flex; flex-direction: column">
+      <SiteHeader active={active} />
+      <main id="main" style={wide ? 'flex: 1' : 'flex: 1; width: 100%; max-width: 1200px; margin: 0 auto; padding: 32px var(--frame-margin) 96px; display: grid; gap: 40px; align-content: start'}>
+        <slot />
+      </main>
+      <SiteFooter />
+    </div>
+    <script>
+      import { wipe } from '../scripts/wipe';
+      setTimeout(wipe, 250);
+    </script>
+  </body>
+</html>

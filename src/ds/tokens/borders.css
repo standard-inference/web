@@ -1,0 +1,8 @@
+:root{
+--rule-hair:1px;--rule-fine:2px;--rule-medium:3px;--rule-structural:4px;--rule-heavy:6px;--rule-plate:10px;
+--radius-0:0;--radius-chip:4px;--radius-round:50%;
+/* Dash rhythm for insertion lines */
+--dash-on:18px;--dash-off:12px;
+/* Shadow: only one — a flat offset print block. No blur, ever. */
+--shadow-print:6px 6px 0 var(--ink-1);--shadow-print-sm:4px 4px 0 var(--ink-1);--shadow-none:0 0 0 transparent;
+}

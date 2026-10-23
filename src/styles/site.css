@@ -1,0 +1,13 @@
+/* Link hover states the prototype set with style-hover; inline styles can't do :hover. */
+.title-link { color: var(--ink-1); text-decoration-color: var(--ink-4); }
+.title-link:hover { color: var(--ink-2); text-decoration-color: var(--ink-1); }
+.text-btn { background: none; border: 0; padding: 0 4px; min-height: 44px; cursor: pointer; font: var(--text-label); letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--utility-500); text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; }
+.text-btn:hover { color: var(--signal-600); }
+.chip-btn { background: none; border: 0; padding: 4px 0; min-height: 44px; cursor: pointer; display: inline-flex; align-items: center; }
+.section { max-width: 1440px; margin: 0 auto; padding: 0 var(--frame-margin) 96px; scroll-margin-top: 24px; }
+.section-head { display: grid; gap: 8px; padding-bottom: 20px; margin-bottom: 32px; border-bottom: var(--rule-fine) solid var(--ink-1); }
+.section-head h2 { margin: 0; font: var(--weight-bold) var(--type-h1)/var(--lh-heading) var(--font-display); text-transform: uppercase; letter-spacing: var(--tracking-header); }
+.section-head p { margin: 0; max-width: 60ch; font: var(--text-body); font-size: var(--type-body-l); color: var(--ink-2); text-wrap: pretty; }
+.label { font: var(--text-label); letter-spacing: var(--tracking-label); text-transform: uppercase; }
+.h3-caps { font: var(--weight-bold) var(--type-h3)/var(--lh-heading) var(--font-display); text-transform: uppercase; letter-spacing: var(--tracking-header); }
+.h2-caps { margin: 0; font: var(--weight-bold) var(--type-h2)/var(--lh-heading) var(--font-display); text-transform: uppercase; letter-spacing: var(--tracking-header); }

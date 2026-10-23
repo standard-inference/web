@@ -1,0 +1,36 @@
+{
+  "n": 1,
+  "id": "EP 01",
+  "code": "Ep1",
+  "series": "LLM 101",
+  "form": "Form 101-A",
+  "title": "What is a chatbot actually doing?",
+  "question": "How does ChatGPT work?",
+  "summary": "A chatbot is a program that predicts text. When you send a message, it reads it as small pieces called tokens. It then works out which piece is likely to come next, adds it, and repeats, one piece at a time, until the reply is finished. This episode follows a single reply from start to end.",
+  "corrections": [],
+  "claims": [
+    {
+      "claim": "A chatbot builds its reply one token at a time.",
+      "source": "[Source placeholder]",
+      "status": "✓ Sourced"
+    },
+    {
+      "claim": "A token is often a whole word, or part of one.",
+      "source": "[Source placeholder]",
+      "status": "✓ Sourced"
+    },
+    {
+      "claim": "At each step, the model scores many possible next tokens and picks one.",
+      "source": "[Source placeholder]",
+      "status": "✓ Sourced"
+    },
+    {
+      "claim": "Asked the same question twice, the same chatbot can give different replies.",
+      "source": "[Test log placeholder]",
+      "status": "✓ Checked [DD MMM YYYY]",
+      "checked": true,
+      "model": "[Model name, version] · [DD MMM YYYY]"
+    }
+  ],
+  "bridge": "You now know a chatbot writes one piece at a time. Next: what those pieces are."
+}

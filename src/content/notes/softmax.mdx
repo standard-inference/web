@@ -1,0 +1,85 @@
+---
+code: TN-03
+title: The softmax function, worked by hand
+summary: Turning a list of raw scores into probabilities, one step at a time, with a calculator.
+inShort: "Softmax turns a list of raw scores into probabilities that add up to 1. It takes three moves: raise e to the power of each score, add the results, then divide each one by the total. This note works one example by hand, then shows the same steps in a few lines of code."
+date: "[DD MMM YYYY]"
+checked: "[DD MMM YYYY]"
+mins: 12
+level: Maths
+series: Standard Deviation
+episode: D1
+sheet: "03 / 03"
+specTitle: Softmax, by hand
+sources:
+  - label: "[Reference placeholder — author, title, year]"
+  - label: "[Reference placeholder — library documentation]"
+watch:
+  code: D1
+  series: Standard Deviation
+  title: "[D1 working title]"
+  href: /episodes/ep1/
+  status: Coming soon
+---
+
+import { Caption } from '../../ds/index.js';
+import Equation from '../../components/Equation.astro';
+import Cite from '../../components/Cite.astro';
+import SoftmaxFigure from '../../components/react/SoftmaxFigure.jsx';
+import CodeListing from '../../components/react/CodeListing.jsx';
+
+## The problem
+
+At the end of each step, a language model gives a score to every token it knows. These scores are called <dfn>logits</dfn> <span class="gloss">raw, unscaled scores: any number, including negative ones</span>. Logits are not probabilities. They do not add up to anything in particular. We need a fixed procedure that turns them into probabilities without changing their order.<Cite n={1} />
+
+> Softmax does not change the order of the scores. It changes what they mean.
+
+## The formula
+
+For a list of <i>n</i> scores, written <i>z</i>, the probability for score number <i>i</i> is:
+
+<figure>
+  <Equation n="01" title="Softmax" tex={String.raw`\operatorname{softmax}(z)_i = \frac{e^{z_i}}{\sum_{j=1}^{n} e^{z_j}}`} />
+  <figcaption>
+    <Caption speaker="Plainly">Raise e to the power of one score. Divide by the same thing done to every score, added up.</Caption>
+  </figcaption>
+</figure>
+
+The number <i>e</i> is about 2.718.<Cite n={1} fn /> Raising it to a power always gives a positive result, so every probability is above zero. Dividing by the total makes them add up to exactly 1.
+
+## Worked by hand
+
+Take three scores. A calculator is enough.
+
+1. Write down the scores: `2.0, 1.0, 0.1`.
+2. Raise <i>e</i> to each one: `7.389, 2.718, 1.105`.
+3. Add them up: `7.389 + 2.718 + 1.105 = 11.212`.
+4. Divide each by the total: `0.659, 0.242, 0.099`.
+5. Check the result. The three numbers add up to 1.000, and the order has not changed.
+
+<figure>
+  <SoftmaxFigure client:load />
+  <figcaption>
+    <Caption speaker="Fig. 01">Three scores in, three probabilities out. The largest score still wins.</Caption>
+  </figcaption>
+</figure>
+
+## In code
+
+The same procedure, in Python.
+
+<CodeListing client:load n="01" filename="softmax.py" code={`import math
+
+def softmax(scores):
+    exps = [math.exp(z) for z in scores]
+    total = sum(exps)
+    return [x / total for x in exps]
+
+print(softmax([2.0, 1.0, 0.1]))
+# ≈ [0.659, 0.242, 0.099]`} />
+
+In practice, libraries subtract the largest score from every score first. This keeps the numbers small enough to compute safely and gives the same answer.<Cite n={2} />
+
+<aside aria-label="Footnotes" class="footnotes">
+  <p id="fn-1"><span class="mono">*1</span> Any positive base other than 1 would keep the order of the scores. Using <i>e</i> keeps the calculus tidy. <a href="#fnref-1" aria-label="Back to text">↩</a></p>
+</aside>

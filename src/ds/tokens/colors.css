@@ -1,0 +1,20 @@
+:root{
+/* Paper — the manual stock. Never pure white. */
+--paper-0:#F7F2E7;--paper-1:#EDE5D3;--paper-2:#E1D7C1;--paper-3:#CBBFA4;
+/* Ink — warm press black and its tints. Never pure black. */
+--ink-1:#1F1D1A;--ink-2:#47433C;--ink-3:#736D61;--ink-4:#A39B8B;
+/* Spot colours — rationed. Max ONE signal + ONE utility per frame. */
+--signal-100:#F4D5C3;--signal-500:#D9531E;--signal-600:#BF4615;--signal-700:#9A3610;
+--utility-100:#D0DCE2;--utility-500:#2E5E7E;--utility-700:#1E4058;
+--caution-100:#F5E4B6;--caution-500:#E0A526;
+--approve-100:#D5E2CF;--approve-500:#3F7346;
+--reject-100:#F0D0C9;--reject-500:#B5382B;
+/* Semantic aliases */
+--surface-page:var(--paper-1);--surface-panel:var(--paper-0);--surface-recessed:var(--paper-2);--surface-inverse:var(--ink-1);
+--text-primary:var(--ink-1);--text-secondary:var(--ink-2);--text-muted:var(--ink-3);--text-disabled:var(--ink-4);--text-on-inverse:var(--paper-1);--text-on-signal:var(--ink-1);--text-on-utility:var(--paper-0);
+--border-structural:var(--ink-1);--border-construction:var(--ink-4);--rule-tint:var(--paper-3);
+--accent:var(--signal-500);--accent-hover:var(--signal-600);--accent-tint:var(--signal-100);
+--accent-2:var(--utility-500);--accent-2-tint:var(--utility-100);
+--highlight:var(--caution-500);--highlight-tint:var(--caution-100);
+--status-ok:var(--approve-500);--status-bad:var(--reject-500);
+}

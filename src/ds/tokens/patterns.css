@@ -1,0 +1,7 @@
+:root{
+--pattern-dot-grid:radial-gradient(circle,var(--paper-3) 2px,transparent 2.5px) 0 0/48px 48px;
+--pattern-hatch:repeating-linear-gradient(45deg,var(--ink-1) 0 2px,transparent 2px 12px);
+--pattern-hatch-light:repeating-linear-gradient(45deg,var(--ink-4) 0 2px,transparent 2px 12px);
+--pattern-dash-h:repeating-linear-gradient(90deg,currentColor 0 var(--dash-on),transparent var(--dash-on) calc(var(--dash-on) + var(--dash-off)));
+--pattern-dash-v:repeating-linear-gradient(180deg,currentColor 0 var(--dash-on),transparent var(--dash-on) calc(var(--dash-on) + var(--dash-off)));
+}
