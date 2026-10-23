@@ -10,7 +10,11 @@ const { active } = Astro.props as { active?: NavKey };
       <span class="word">Standard<br />Inference</span>
       <span aria-hidden="true" class="stripes"><span style="background: var(--caution-500)"></span><span style="background: var(--approve-500)"></span><span style="background: var(--reject-500)"></span><span style="background: var(--utility-700)"></span></span>
     </a>
-    <nav aria-label="Main">
+    <button type="button" class="menu-btn" aria-expanded="false" aria-controls="site-nav">
+      <span class="menu-label">Menu</span>
+      <span aria-hidden="true" class="bars"><i></i><i></i><i></i></span>
+    </button>
+    <nav aria-label="Main" id="site-nav">
       <ul>
         {nav.map((l) => (
           <li><a data-hl href={l.href} aria-current={l.key === active ? 'page' : undefined} class:list={{ on: l.key === active }}>{l.label}</a></li>
@@ -19,6 +23,22 @@ const { active } = Astro.props as { active?: NavKey };
     </nav>
   </div>
 </header>
+
+<script>
+  const btn = document.querySelector<HTMLButtonElement>('.menu-btn');
+  const header = document.querySelector<HTMLElement>('.site-header');
+  const setOpen = (open: boolean) => {
+    btn?.setAttribute('aria-expanded', String(open));
+    header?.toggleAttribute('data-open', open);
+    const label = btn?.querySelector('.menu-label');
+    if (label) label.textContent = open ? 'Close' : 'Menu';
+  };
+  btn?.addEventListener('click', () => setOpen(btn.getAttribute('aria-expanded') !== 'true'));
+  header?.querySelectorAll('nav a').forEach((a) => a.addEventListener('click', () => setOpen(false)));
+  addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && btn?.getAttribute('aria-expanded') === 'true') { setOpen(false); btn.focus(); }
+  });
+</script>
 
 <style>
   .site-header { background: var(--paper-0); border-bottom: var(--rule-structural) solid var(--ink-1); position: relative; }
@@ -34,4 +54,23 @@ const { active } = Astro.props as { active?: NavKey };
   li a { min-height: 44px; display: flex; align-items: center; gap: 6px; padding: 0 12px; font: var(--text-label); letter-spacing: var(--tracking-label); text-transform: uppercase; text-decoration: none; color: var(--ink-1); background: transparent; border: var(--rule-fine) solid transparent; }
   li a:hover { border-color: var(--ink-1); }
   li a.on { color: var(--paper-0); background: var(--ink-1); border-color: var(--ink-1); }
+  .menu-btn { display: none; min-height: 44px; align-items: center; gap: 12px; padding: 0 14px; background: var(--paper-0); color: var(--ink-1); border: var(--rule-structural) solid var(--ink-1); cursor: pointer; font: var(--text-label); letter-spacing: var(--tracking-label); text-transform: uppercase; }
+  .menu-btn:hover { background: var(--paper-2); }
+  .bars { display: grid; gap: 4px; width: 20px; }
+  .bars i { display: block; height: 3px; background: var(--ink-1); transition: transform var(--dur-snap) var(--ease-assemble), opacity var(--dur-snap) var(--ease-assemble); }
+  .site-header[data-open] .bars i:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .site-header[data-open] .bars i:nth-child(2) { opacity: 0; }
+  .site-header[data-open] .bars i:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+  @media (max-width: 760px) {
+    .bar { flex-wrap: wrap; row-gap: 0; }
+    .menu-btn { display: inline-flex; }
+    nav { display: none; flex: 0 0 calc(100% + var(--frame-margin) * 2); margin: 14px calc(var(--frame-margin) * -1) -14px; border-top: var(--rule-structural) solid var(--ink-1); background: var(--paper-0); }
+    .site-header[data-open] nav { display: block; }
+    ul { flex-direction: column; flex-wrap: nowrap; gap: 0; }
+    li { display: block; border-bottom: var(--rule-fine) solid var(--paper-3); }
+    li:last-child { border-bottom: 0; }
+    li a { min-height: 52px; padding: 0 var(--frame-margin); border: 0; border-left: var(--rule-plate) solid transparent; }
+    li a:hover { border-color: transparent; background: var(--paper-2); }
+    li a.on { border-left-color: var(--signal-500); }
+  }
 </style>
