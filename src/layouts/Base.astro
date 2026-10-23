@@ -25,9 +25,9 @@ const { title, description, active, wide } = Astro.props;
     {description && <meta name="description" content={description} />}
   </head>
   <body>
-    <div style="min-height: 100vh; display: flex; flex-direction: column">
+    <div class="shell">
       <SiteHeader active={active} />
-      <main id="main" style={wide ? 'flex: 1' : 'flex: 1; width: 100%; max-width: 1200px; margin: 0 auto; padding: 32px var(--frame-margin) 96px; display: grid; gap: 40px; align-content: start'}>
+      <main id="main" class:list={[wide ? 'main-wide' : 'main-column']}>
         <slot />
       </main>
       <SiteFooter />

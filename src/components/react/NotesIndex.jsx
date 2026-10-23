@@ -31,12 +31,12 @@ export default function NotesIndex({ notes }) {
   const posts = notes.filter((n) => (!lv.length || lv.includes(n.level)) && (!se.length || se.includes(n.series)));
   return (
     <>
-      <section aria-label="Filters" style={{ border: 'var(--rule-structural) solid var(--ink-1)', background: 'var(--paper-0)', display: 'grid' }}>
+      <section aria-label="Filters" style={{ border: 'var(--rule-structural) solid var(--ink-1)', background: 'var(--paper-0)', display: 'grid', gridTemplateColumns: 'minmax(0, 1fr)' }}>
         <Chips id="f-level" title="Level" options={LEVELS} on={lv} toggle={flip(setLv)} />
         <Chips id="f-series" title="Series" options={SERIES} on={se} toggle={flip(setSe)} last />
       </section>
 
-      <section aria-labelledby="h-list" style={{ display: 'grid', gap: 20 }}>
+      <section aria-labelledby="h-list" style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr)', gap: 20 }}>
         <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: 12, paddingBottom: 14, borderBottom: 'var(--rule-fine) solid var(--ink-1)' }}>
           <h2 id="h-list" className="h3-caps" style={{ margin: 0, lineHeight: 1 }}>Newest first</h2>
           <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
@@ -46,16 +46,16 @@ export default function NotesIndex({ notes }) {
             )}
           </div>
         </div>
-        <ol data-wipe="" style={{ listStyle: 'none', margin: 0, padding: 0, display: 'grid', gap: 24 }}>
+        <ol data-wipe="" style={{ listStyle: 'none', margin: 0, padding: 0, display: 'grid', gridTemplateColumns: 'minmax(0, 1fr)', gap: 24 }}>
           {posts.map((p) => (
             <li key={p.code}>
               <article style={{ border: 'var(--rule-structural) solid var(--ink-1)', background: 'var(--paper-0)', display: 'flex', flexWrap: 'wrap', overflow: 'hidden' }}>
-                <div style={{ flex: '1 1 180px', padding: 20, borderRight: 'var(--rule-fine) solid var(--ink-1)', borderBottom: 'var(--rule-fine) solid var(--ink-1)', margin: '0 -2px -2px 0', background: 'var(--paper-1)', display: 'grid', gap: 10, alignContent: 'start', ...label }}>
+                <div style={{ flex: '1 1 min(100%, 180px)', padding: 20, borderRight: 'var(--rule-fine) solid var(--ink-1)', borderBottom: 'var(--rule-fine) solid var(--ink-1)', margin: '0 -2px -2px 0', background: 'var(--paper-1)', display: 'grid', gap: 10, alignContent: 'start', ...label }}>
                   <span style={{ font: 'var(--weight-bold) var(--type-h3)/1 var(--font-mono)' }}>{p.code}</span>
                   <span style={{ color: 'var(--ink-2)' }}>{p.date}</span>
                   <span style={{ color: 'var(--ink-2)' }}>{p.mins} min read</span>
                 </div>
-                <div style={{ flex: '4 1 340px', padding: 'var(--panel-pad)', display: 'flex', flexDirection: 'column', gap: 14, alignItems: 'flex-start', minWidth: 0 }}>
+                <div style={{ flex: '4 1 min(100%, 340px)', padding: 'var(--panel-pad)', display: 'flex', flexDirection: 'column', gap: 14, alignItems: 'flex-start', minWidth: 0 }}>
                   <h3 className="h2-caps" style={{ textWrap: 'balance' }}><a href={p.href} data-hl="" className="title-link">{p.title}</a></h3>
                   <p style={{ margin: 0, maxWidth: '62ch', font: 'var(--text-body)', color: 'var(--ink-2)', textWrap: 'pretty' }}>{p.summary}</p>
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, alignItems: 'center' }}>

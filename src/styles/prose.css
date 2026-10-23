@@ -38,3 +38,4 @@
 .note-head .eyebrow { font: var(--text-label); letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--ink-2); }
 .note-head h1 { margin: 0; font: var(--weight-bold) var(--type-h1)/var(--lh-heading) var(--font-display); text-transform: uppercase; letter-spacing: var(--tracking-header); text-wrap: balance; }
 article.note { width: 100%; max-width: 70ch; margin: 0 auto; font: var(--weight-regular) var(--type-reading)/1.65 var(--font-body); color: var(--ink-1); display: grid; gap: 24px; }
+.prose figure { grid-template-columns: minmax(0, 1fr); }
